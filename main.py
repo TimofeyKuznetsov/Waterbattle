@@ -1,4 +1,5 @@
 import os
+import random
 def Ship_letter_number_calculator(a):
     if a==1:
         return 'первого'
@@ -10,9 +11,9 @@ def Ship_letter_number_calculator(a):
         return 'четвертого'
 def Perimeter(a,b,c,d,players_digital_number):
     for i in range(b):
-        for j in range(d):
-            if a-1+i>=0 and c-1+j>=0 and a-1+i<=9 and c-1+j<=9:
-                game_board[players_digital_number][a-1+i][c-1+j]=2
+        for x in range(d):
+            if a-1+i>=0 and c-1+x>=0 and a-1+i<=9 and c-1+x<=9:
+                game_board[players_digital_number][a-1+i][c-1+x]=2
 def Exception_e_brief(a):
     if ord(a)==1050:
         return 1
@@ -23,7 +24,9 @@ def Letter_number_of_the_player(players_digital_number):
         return 'перв'
     else:
         return 'второ'
-def Input(game_board):
+def Randint(a,b):
+    return random.randint(a,b)
+def Input(game_board,player_or_robot,autofill):
     for players_digital_number in range(2):
         letter_number_of_the_player=Letter_number_of_the_player(players_digital_number)[0].upper()+Letter_number_of_the_player()[1:]+'ый'
         print(letter_number_of_the_player+' игрок расставляет корабли.')
@@ -36,10 +39,26 @@ def Input(game_board):
                     p=1
                 elif p==1:
                     g='Данная кординаты недопустимы. Введите к'
-                array_with_variables=input(g + 'ординаты '+letter_number_of_the_ship+' однопалубного корабля через пробел: ').split()
-                Y=Exception_e_brief(array_with_variables[0])#Исключение "Й" из таблицы ASCII из y
-                y=ord(array_with_variables[0])-1040-Y#Вертикаль
-                x=int(array_with_variables[1])-1#Горизонталь
+                if players_digital_number==1:
+                    if player_or_robot==0:
+                        x=Randint(0,9)
+                        y=Randint(0,9)
+                    elif autofill==0:
+                        x=Randint(0,9)
+                        y=Randint(0,9)
+                        array_with_variables=input(g + 'ординаты '+letter_number_of_the_ship+' однопалубного корабля через пробел: ').split()
+                        Y=Exception_e_brief(array_with_variables[0])#Исключение "Й" из таблицы ASCII из y
+                        y=ord(array_with_variables[0])-1040-Y#Вертикаль
+                        x=int(array_with_variables[1])-1#Горизонталь
+                else:
+                    if autofill==0:
+                        x=Randint(0,9)
+                        y=Randint(0,9)
+                    else:
+                        array_with_variables=input(g + 'ординаты '+letter_number_of_the_ship+' однопалубного корабля через пробел: ').split()
+                        Y=Exception_e_brief(array_with_variables[0])#Исключение "Й" из таблицы ASCII из y
+                        y=ord(array_with_variables[0])-1040-Y#Вертикаль
+                        x=int(array_with_variables[1])-1#Горизонталь
                 if game_board[players_digital_number][y][x]!=1 and game_board[players_digital_number][y][x]!=2:
                     break
             Perimeter(y,3,x,3,players_digital_number)
@@ -55,8 +74,8 @@ def Input(game_board):
                     print(i+1,end='  ')
                 else:
                     print(10,end=' ')
-                for j in range(10):
-                    print(game_board[players_digital_number][j][i],end=' ')
+                for x in range(10):
+                    print(game_board[players_digital_number][x][i],end=' ')
                 print()
         for numerical_number_of_ship_decks in range(2,5):
             for digital_number_of_the_ship in range(1,5-numerical_number_of_ship_decks+1):
@@ -76,6 +95,7 @@ def Input(game_board):
                     elif p==1:
                         g='Данные кординаты недопустимы. Введите к'
                     array_with_variables=input(g+'ординаты '+letter_number_of_the_ship+ur+'палубного корабля через пробел: ').split()
+                    os.system('CLS')
                     Y0=Exception_e_brief(array_with_variables[0])#Исключение "Й" из таблицы ASCII из y1
                     Y1=Exception_e_brief(array_with_variables[2])#Исключение "Й" из таблицы ASCII из y2
                     y1=ord(array_with_variables[0])-1040-Y0#Начальная вертикаль
@@ -87,12 +107,12 @@ def Input(game_board):
                     if x1>x2:
                         x1,x2=x2,x1
                     if y1==y2:
-                        for j in range(numerical_number_of_ship_decks):
-                            if x2-x1+1==numerical_number_of_ship_decks and game_board[players_digital_number][y1][x1 + j] != 2 and game_board[players_digital_number][y1][x1 + j] != 1:
+                        for x in range(numerical_number_of_ship_decks):
+                            if x2-x1+1==numerical_number_of_ship_decks and game_board[players_digital_number][y1][x1 + x] != 2 and game_board[players_digital_number][y1][x1 + x] != 1:
                                 u=1
                     elif x1 == x2:
-                        for j in range(numerical_number_of_ship_decks):
-                            if y2-y1+1==numerical_number_of_ship_decks and game_board[players_digital_number][y1+j][x1]!=2 and game_board[players_digital_number][y1+j][x1]!=1:
+                        for x in range(numerical_number_of_ship_decks):
+                            if y2-y1+1==numerical_number_of_ship_decks and game_board[players_digital_number][y1+x][x1]!=2 and game_board[players_digital_number][y1+x][x1]!=1:
                                 u=1
                     if u==1:
                         break
@@ -112,80 +132,146 @@ def Input(game_board):
                         print(chr(1040+i))
                 for i in range(10):
                     print(i+1,end=' ')
-                    for j in range(10):
-                        print(game_board[players_digital_number][j][i],end=' ')
+                    for x in range(10):
+                        print(game_board[players_digital_number][x][i],end=' ')
                     print()
-        os.system('CLS')
+    os.system('CLS')
     p=0
     return game_board
-def Battle(game_board):
+def Battle(game_board,player_or_robot,complexity):
+    victory_counter=[[20]for i in range (2)]
     while victory_counter[0]!=0 or victory_counter[1]!=0:
         for players_digital_number in range(2):
-            c=1
-            while c==1:
-                c=0
-                print('Стреляет '+Letter_number_of_the_player()+'ый игрок')
-                while 1!=0:
-                    if p==0:
-                        p=1
-                        g='К'
+            if player_or_robot==1:
+                c=1
+                while c==1:
+                    c=0
+                    if player_or_robot==0:
+                        print('Стреляет '+Letter_number_of_the_player()+'ый игрок.')
                     else:
-                        g='Вы уже стреляли в эту точку. Введите к'
-                    d=input(g + 'ординаты выстрела через пробел:').split()
-                    if ord(d[0])==1050:
-                        Y=1
-                    i=ord(d[0])-1040-Y
-                    j=d[0]-1
-                    if game_board[1-players_digital_number][i][j]==3:
-                        break
-                if game_board[1-players_digital_number][i][j]==1:
-                    victory_counter[players_digital_number]-=1
-                    c=1
-                    game_board[1-players_digital_number][i][j]='*'
-                else:
-                    game_board[1-players_digital_number][i][j]=3
-                print(' ',end='  ')
-                for i in range(10):
-                    if i==9:
-                        print('К')
-                    else:
-                        print(chr(1040+i),end=' ')
-                for i in range(10):
-                    if i<9:
-                        print(i+1,end='  ')
-                    else:
-                        print(10,end=' ')
-                    for j in range(10):
-                        if game_board[players_digital_number][j][i]==1 or game_board[players_digital_number][j][i]==2:
-                            print(0,end=' ')
+                        if players_digital_number==1:
+                            print('Стреляет компьютер.')
                         else:
-                            print(game_board[players_digital_number][j][i],end=' ')
-                    print()
+                            print('Стреляет игрок.')
+                    while 1!=0:
+                        if p==0:
+                            p=1
+                            g='К'
+                        else:
+                            g='Вы уже стреляли в эту точку. Введите к'
+                        if player_or_robot==1:
+                            array_with_variables=input(g + 'ординаты выстрела через пробел:').split()
+                            Y=Exception_e_brief(array_with_variables[0])
+                            y=ord(array_with_variables[0])-1040-Y
+                            x=array_with_variables[0]-1
+                        else:
+                            if complexity==2:
+                                while 1!=2:
+                                    x=Randint(0,9)
+                                    y=Randint(0,9)
+                                    if abs(x%2-y%2)==1:
+                                        break
+                            else:
+                                x=Randint(0,9)
+                                y=Randint(0,9)
+                        if game_board[1-players_digital_number][y][x]!=3:
+                            break
+                    if game_board[1-players_digital_number][y][x]==1:
+                        victory_counter[players_digital_number]-=1
+                        c=1
+                        game_board[1-players_digital_number][y][x]='*'
+                    else:
+                        game_board[1-players_digital_number][y][x]=3
+                    print(' ',end='  ')
+                    for i in range(10):
+                        if i==9:
+                            print('К')
+                        else:
+                            print(chr(1040+i),end=' ')
+                    for i in range(10):
+                        if i<9:
+                            print(i+1,end='  ')
+                        else:
+                            print(10,end=' ')
+                        for x in range(10):
+                            if game_board[players_digital_number][x][y]==1 or game_board[players_digital_number][x][y]==2:
+                                print(0,end=' ')
+                            else:
+                                print(game_board[players_digital_number][x][y],end=' ')
+                        print()
+                    if victory_counter[0]==0 or victory_counter[1]==0:
+                        break
                     if victory_counter[0]==0:
                         return 0
                     if victory_counter[1]==0:
                         return 1
-def Victory(victory_counter):
-    if victory_counter[0]==0:
+def Victory(victory_counter,player_or_robot):
+    if victory_counter==0:
         print('Первый игрок победил!')
-    if victory_counter[1]==0:
-        print('Второй игрок победил!')
+    if victory_counter==1:
+        if player_or_robot==0:
+            print('Второй игрок победил!')
+        else:
+            print('Компьютер победил!')
     for players_digital_number in range(2):
         print('Поле'+Letter_number_of_the_player()+'ого игрока:')
         print(' ',end='  ')
-        for i in range(10):
-            if i==9:
+        for y in range(10):
+            if y==9:
                 print('К')
             else:
-                print(chr(1040+i),end=' ')
+                print(chr(1040+y),end=' ')
         for i in range(10):
             if i<9:
                 print(i+1,end='  ')
             else:
                 print(10,end=' ')
-            for j in range(10):
-                print(game_board[players_digital_number][j][i],end=' ')
+            for x in range(10):
+                print(game_board[players_digital_number][x][i],end=' ')
             print()
-victory_counter=[[20]for i in range (2)]
-game_board=[[[0 for i in range(10)] for j in range(10)] for p in range(2)]
-Victory(Battle(Input(game_board)))
+#
+#
+#
+game_board=[[[0 for i in range(10)] for x in range(10)] for p in range(2)]
+i=0
+while 1!=0:
+    if i==0:
+        i=1
+        g='С кем будешь играть с человеком или с компьютером? '
+    else:
+        g='Данный ответ недопустим, ответьте либо человек, либо компьютер:'
+    player_or_robot=input(g)
+    if player_or_robot=='человек' or player_or_robot=='компьютер':
+        break
+i=0
+while 1!=0:
+    if i==0:
+        i=1
+        g='Какая сложность 1-ая или 2-ая?'
+    else:
+        g='Данный ответ недопустим, ответьте либо 1, либо 2:'
+    complexity=input(g)
+    if complexity=='да' or complexity=='нет':
+        break
+    if complexity=='да':
+        complexity=1
+    else:
+        complexity=2
+i=0
+while 1!=0:
+    if i==0:
+        i=1
+        g='Нужно автозаполнение? '
+    else:
+        g='Данный ответ недопустим, ответьте либо да, либо нет:'
+    autofill=input(g)
+    if autofill=='да' or autofill=='нет':
+        break
+    if autofill=='да':
+        autofill=0
+    else:
+        autofill=1
+if player_or_robot=='человек':
+    Victory(Battle(Input(game_board,0,autofill),0),0,complexity)
+else:
+    Victory(Battle(Input(game_board,1,autofill),1),1,complexity)
