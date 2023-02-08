@@ -189,10 +189,7 @@ def Input(game_board,player_or_robot,autofill,correct_direction):
                             y1,y2,x1,x2,u=Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,p,u)
                     if u==numerical_number_of_ship_decks:
                         break
-                if y1>y2:
-                    y1,y2=y2,y1
-                if x1>x2:
-                    x1,x2=x2,x1
+                    y1,y2,x1,x2=min(y1,y2),max(y1,y2),min(x1,x2),max(x1,x2)
                 if y1==y2:
                     Perimeter(y1,3,x1,numerical_number_of_ship_decks+2,players_digital_number)
                     for i in range(numerical_number_of_ship_decks):
@@ -307,10 +304,6 @@ def Victory(victory_counter,player_or_robot):
             for x in range(10):
                 print(game_board[players_digital_number][x][i],end=' ')
             print()
-#
-#
-#
-x,y=Randint(0,9)
 correct_direction=[]
 game_board=[[[0 for i in range(10)] for x in range(10)] for p in range(2)]
 player_or_robot=Player_or_robot()
