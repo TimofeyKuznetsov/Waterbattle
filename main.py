@@ -5,6 +5,24 @@ def Direction_check(a,b,numerical_number_of_ship_decks,u):
         if a+i*b!=1 and a+i*b!=2:
             u+=1
             return a-(numerical_number_of_ship_decks-1),u
+def Output(game_board,players_digital_number,a,b):
+    print(' ',end='  ')
+    for i in range(10):
+        if i==9:
+            print('К')
+        else:
+            print(chr(1040+i),end=' ')
+        for i in range(10):
+            if i<9:
+                print(i+1,end='  ')
+            else:
+                print(10,end=' ')
+            for x in range(10):
+                for y in range(10):
+                    if game_board[players_digital_number][x][y]==a or game_board[players_digital_number][x][y]==b:
+                        print(0,end=' ')
+                    else:
+                        print(game_board[players_digital_number][x][y],end=' ')
 def Tactics(a):
     while 1!=2:
         x,y=Randint(0,9)
@@ -75,7 +93,7 @@ def Complexity():
         if complexity=='1' or complexity=='2':
             break
     return int(complexity)
-def Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,p,u):
+def Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,p,u,game_board):
     if p==0:
         g='К'
         p=1
@@ -148,20 +166,7 @@ def Input(game_board,player_or_robot,autofill,correct_direction):
                     break
             Perimeter(y,3,x,3,players_digital_number)
             game_board[0][y][x]=1
-            print(' ',end='  ')
-            for i in range(10):
-                if i==9:
-                    print('К')
-                else:
-                    print(chr(1040+i),end=' ')
-            for i in range(10):
-                if i<9:
-                    print(i+1,end='  ')
-                else:
-                    print(10,end=' ')
-                for x in range(10):
-                    print(game_board[players_digital_number][x][i],end=' ')
-                print()
+            Output(game_board,players_digital_number,3,3)
         for numerical_number_of_ship_decks in range(2,5):
             for digital_number_of_the_ship in range(1,5-numerical_number_of_ship_decks+1):
                 letter_number_of_the_ship=Ship_letter_number_calculator(digital_number_of_the_ship)
@@ -178,12 +183,12 @@ def Input(game_board,player_or_robot,autofill,correct_direction):
                         y1,y2,x1,x2,u=Multydeck_ship_autofill(numerical_number_of_ship_decks,u)
                     else:
                         if player_or_robot==1:
-                            y1,y2,x1,x2,u=Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,p,u)
+                            y1,y2,x1,x2,u=Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,p,u,game_board)
                         elif player_or_robot==0:
                             if players_digital_number==1:
                                 y1,y2,x1,x2,u=Multydeck_ship_autofill(numerical_number_of_ship_decks,u)       
                         else:
-                            y1,y2,x1,x2,u=Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,p,u)
+                            y1,y2,x1,x2,u=Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,p,u,game_board)
                     if u==numerical_number_of_ship_decks:
                         break
                     y1,y2,x1,x2=min(y1,y2),max(y1,y2),min(x1,x2),max(x1,x2)
@@ -195,17 +200,7 @@ def Input(game_board,player_or_robot,autofill,correct_direction):
                     Perimeter(y1,numerical_number_of_ship_decks+2,x1,3,players_digital_number)
                     for i in range(numerical_number_of_ship_decks):
                         game_board[players_digital_number][y1+i][x1]=1
-                print(' ',end=' ')
-                for i in range(10):
-                    if i==9:
-                        print('К')
-                    else:
-                        print(chr(1040+i))
-                for i in range(10):
-                    print(i+1,end=' ')
-                    for x in range(10):
-                        print(game_board[players_digital_number][x][i],end=' ')
-                    print()
+                Output(game_board,players_digital_number,3,3)
     os.system('CLS')
     p=0
     return game_board
@@ -251,23 +246,7 @@ def Battle(game_board,player_or_robot,complexity):
                 else:
                     game_board[1-players_digital_number][y][x]=3
                 os.system('CLS')
-                print(' ',end='  ')
-                for i in range(10):
-                    if i==9:
-                        print('К')
-                    else:
-                        print(chr(1040+i),end=' ')
-                for i in range(10):
-                    if i<9:
-                        print(i+1,end='  ')
-                    else:
-                        print(10,end=' ')
-                    for x in range(10):
-                        if game_board[players_digital_number][x][y]==1 or game_board[players_digital_number][x][y]==2:
-                            print(0,end=' ')
-                        else:
-                            print(game_board[players_digital_number][x][y],end=' ')
-                    print()
+                Output(game_board,players_digital_number,1,2)
                 if victory_counter[0]==0 or victory_counter[1]==0:
                     break
             if victory_counter[0]==0:
@@ -284,20 +263,7 @@ def Victory(victory_counter,player_or_robot):
             print('Компьютер победил!')
     for players_digital_number in range(2):
         print('Поле'+Letter_number_of_the_player()+'ого игрока:')
-        print(' ',end='  ')
-        for y in range(10):
-            if y==9:
-                print('К')
-            else:
-                print(chr(1040+y),end=' ')
-        for i in range(10):
-            if i<9:
-                print(i+1,end='  ')
-            else:
-                print(10,end=' ')
-            for x in range(10):
-                print(game_board[players_digital_number][x][i],end=' ')
-            print()
+        Output(game_board,players_digital_number,10,10)
 correct_direction=[]
 game_board=[[[0 for i in range(10)] for x in range(10)] for p in range(2)]
 player_or_robot=Player_or_robot()
