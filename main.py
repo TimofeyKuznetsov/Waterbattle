@@ -87,8 +87,7 @@ def Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_shi
         for x in range(numerical_number_of_ship_decks):
             if abs(y2-y1)+1==numerical_number_of_ship_decks and game_board[players_digital_number][y1+x][x1]!=2 and game_board[players_digital_number][y1+x][x1]!=1:
                 u+=1
-    cordinates_and_u=[y1,y2,x1,x2,u]
-    return cordinates_and_u
+    return y1,y2,x1,x2,u
 def Multydeck_ship_autofill(numerical_number_of_ship_decks,u):
     x1,y1=Randint(0,9)
     if y1!=0:
@@ -120,8 +119,8 @@ def Multydeck_ship_autofill(numerical_number_of_ship_decks,u):
             if y1-i!=1 and y1-i!=2:
                 u+=1
                 y2=y1-(numerical_number_of_ship_decks-1)
-    cordinates_and_u=[y1,y2,x1,x2,u]
-    return cordinates_and_u
+    y1,y2,x1,x2,u=[y1,y2,x1,x2,u]
+    return y1,y2,x1,x2,u
 def Input(game_board,player_or_robot,autofill,correct_direction):
     for players_digital_number in range(2):
         letter_number_of_the_player=Letter_number_of_the_player(players_digital_number)[0].upper()+Letter_number_of_the_player()[1:]+'ый'
@@ -179,22 +178,17 @@ def Input(game_board,player_or_robot,autofill,correct_direction):
                 while 1!=0:
                     u=0
                     if autofill==0:
-                        cordinates_and_u=Multydeck_ship_autofill(numerical_number_of_ship_decks,u)
+                        y1,y2,x1,x2,u=Multydeck_ship_autofill(numerical_number_of_ship_decks,u)
                     else:
                         if player_or_robot==1:
-                            cordinates_and_u=Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,p,u)
+                            y1,y2,x1,x2,u=Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,p,u)
                         elif player_or_robot==0:
                             if players_digital_number==1:
-                                cordinates_and_u=Multydeck_ship_autofill(numerical_number_of_ship_decks,u)       
+                                y1,y2,x1,x2,u=Multydeck_ship_autofill(numerical_number_of_ship_decks,u)       
                         else:
-                            cordinates_and_u=Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,p,u)
+                            y1,y2,x1,x2,u=Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,p,u)
                     if u==numerical_number_of_ship_decks:
-                        break   
-                y1=cordinates_and_u[0]
-                y2=cordinates_and_u[1]
-                x1=cordinates_and_u[2]
-                x2=cordinates_and_u[3]
-                u=cordinates_and_u[4]
+                        break
                 if y1>y2:
                     y1,y2=y2,y1
                 if x1>x2:
@@ -327,4 +321,4 @@ a=0
 if player_or_robot=='С человеком':
     Victory(Battle(Input(game_board,0,autofill,correct_direction),0,complexity),0)
 else:
-    Victory(Battle(Input(game_board,1,autofill,correct_direction),1),1,complexity)
+    Victory(Battle(Input(game_board,1,autofill,correct_direction),1,complexity),1)
