@@ -1,5 +1,10 @@
 import os
 import random
+def tactics(a):
+    while 1!=2:
+        x,y=Randint(0,9)
+        if abs(x%2-y%2)==a:
+            break
 def Ship_letter_number_calculator(a):
     if a==1:
         return 'первого'
@@ -239,11 +244,8 @@ def Battle(game_board,player_or_robot,complexity):
                         y=ord(array_with_variables[0])-1040-Y
                         x=array_with_variables[0]-1
                     else:
-                        if complexity==2 and i<=50:
-                            while 1!=2:
-                                x,y=Randint(0,9)
-                                if abs(x%2-y%2)==1:
-                                    break
+                        if complexity==2:
+                            tactics(i//50)
                         else:
                             x,y=Randint(0,9)
                     if game_board[1-players_digital_number][y][x]!=3:
