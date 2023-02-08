@@ -1,6 +1,11 @@
 import os
 import random
-def tactics(a):
+def Direction_check(a,b,numerical_number_of_ship_decks,u):
+    for i in range(numerical_number_of_ship_decks):
+        if a+i*b!=1 and a+i*b!=2:
+            u+=1
+            return a-(numerical_number_of_ship_decks-1),u
+def Tactics(a):
     while 1!=2:
         x,y=Randint(0,9)
         if abs(x%2-y%2)==a:
@@ -105,26 +110,13 @@ def Multydeck_ship_autofill(numerical_number_of_ship_decks,u):
         correct_direction.append(4)
     direction=random.choice(correct_direction)
     if direction==0:
-        for i in range(numerical_number_of_ship_decks):
-            if x1-i!=1 and x1-i!=2:
-                u+=1
-                x2=x1-(numerical_number_of_ship_decks-1)
+        x2,u=Direction_check(x1,-1,numerical_number_of_ship_decks,u)
     elif direction==1:
-        for i in range(numerical_number_of_ship_decks):
-            if y1+i!=1 and y1+i!=2:
-                u+=1
-                y2=y1+(numerical_number_of_ship_decks-1)
+        y2,u=Direction_check(y1,1,numerical_number_of_ship_decks,u)
     elif direction==2:
-        for i in range(numerical_number_of_ship_decks):
-            if x1+i!=1 and x1+i!=2:
-                u+=1
-                x2=x1+(numerical_number_of_ship_decks-1)
+        x2,u=Direction_check(x1,1,numerical_number_of_ship_decks,u)
     else:
-        for i in range(numerical_number_of_ship_decks):
-            if y1-i!=1 and y1-i!=2:
-                u+=1
-                y2=y1-(numerical_number_of_ship_decks-1)
-    y1,y2,x1,x2,u=[y1,y2,x1,x2,u]
+        y2,u=Direction_check(y1,-1,numerical_number_of_ship_decks,u)
     return y1,y2,x1,x2,u
 def Input(game_board,player_or_robot,autofill,correct_direction):
     for players_digital_number in range(2):
@@ -245,7 +237,7 @@ def Battle(game_board,player_or_robot,complexity):
                         x=array_with_variables[0]-1
                     else:
                         if complexity==2:
-                            tactics(i//50)
+                            Tactics(i//50)
                         else:
                             x,y=Randint(0,9)
                     if game_board[1-players_digital_number][y][x]!=3:
