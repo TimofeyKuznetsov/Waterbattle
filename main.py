@@ -195,8 +195,7 @@ def Input(game_board,player_or_robot,autofill,correct_direction):
                 os.system('CLS')
                 Output(game_board,players_digital_number,3,3)
     os.system('CLS')
-    for i in range(2):
-        Output(game_board,players_digital_number,3,3)
+    print(game_board)
     p=0
     return game_board
 def Battle(game_board,player_or_robot,complexity):
