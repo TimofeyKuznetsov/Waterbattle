@@ -194,7 +194,7 @@ def Input(game_board,player_or_robot,autofill,correct_direction):
                         game_board[players_digital_number][y1+i][x1]=1
                 os.system('CLS')
                 Output(game_board,players_digital_number,3,3)
-    os.system('CLS')
+#    os.system('CLS')
     print(game_board)
     p=0
     return game_board
@@ -203,6 +203,7 @@ def Battle(game_board,player_or_robot,complexity):
     while victory_counter[0]!=0 or victory_counter[1]!=0:
         for players_digital_number in range(2):
             c=1
+            print(players_digital_number)
             while c==1:
                 c=0
                 if player_or_robot==0:
@@ -243,7 +244,7 @@ def Battle(game_board,player_or_robot,complexity):
                     game_board[1-players_digital_number][y][x]=3
                 else:
                     game_board[1-players_digital_number][y][x]='*'
-                os.system('CLS')
+#                os.system('CLS')
                 Output(game_board,players_digital_number,1,2)
                 if victory_counter[0]==0 or victory_counter[1]==0:
                     break
