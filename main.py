@@ -4,25 +4,20 @@ def Direction_check(a,b,numerical_number_of_ship_decks,u):
     for i in range(numerical_number_of_ship_decks):
         if a+i*b!=1 and a+i*b!=2:
             u+=1
-            return a-(numerical_number_of_ship_decks-1),u
+    return a-(numerical_number_of_ship_decks-1),u
 def Output(game_board,players_digital_number,a,b):
     print(' ',end='  ')
     for i in range(10):
-        if i==9:
-            print('К')
-        else:
-            print(chr(1040+i),end=' ')
-        for i in range(10):
-            if i<9:
-                print(i+1,end='  ')
+        print(chr(1040+i+i//9),end=' ')
+    print()
+    for x in range(10):
+        print(x+1,end=(' '*(2-x//9)))
+        for y in range(10):
+            if game_board[players_digital_number][x][y]==a or game_board[players_digital_number][x][y]==b:
+                print(0,end=' ')
             else:
-                print(10,end=' ')
-            for x in range(10):
-                for y in range(10):
-                    if game_board[players_digital_number][x][y]==a or game_board[players_digital_number][x][y]==b:
-                        print(0,end=' ')
-                    else:
-                        print(game_board[players_digital_number][x][y],end=' ')
+                print(game_board[players_digital_number][x][y],end=' ')
+        print()
 def Tactics(a):
     while 1!=2:
         x,y=Randint(0,9)
@@ -59,11 +54,11 @@ def Player_or_robot():
     while 1!=0:
         if i==0:
             i=1
-            g='С кем будешь играть с человеком или с компьютером? '
+            g='С кем будешь играть с человеком или с компьютером? Ответьте либо с человеком, либо с компьютером: '
         else:
-            g='Данный ответ недопустим, ответьте либо человек, либо компьютер: '
+            g='Данный ответ недопустим, ответьте либо с человеком, либо с компьютером: '
         player_or_robot=input(g)
-        if player_or_robot=='C человеком' or player_or_robot=='С компьютером':
+        if player_or_robot=='с человеком' or player_or_robot=='с компьютером':
             break
             return player_or_robot
 def Autofill():
@@ -71,9 +66,9 @@ def Autofill():
     while 1!=0:
         if i==0:
             i=1
-            g='Нужно автозаполнение? '
+            g='Нужно автозаполнение? Ответьте либо да, либо нет: '
         else:
-            g='Данный ответ недопустим, ответьте либо да, либо нет:'
+            g='Данный ответ недопустим, ответьте либо да, либо нет: '
         autofill=input(g)
         if autofill=='да' or autofill=='нет':
             break
@@ -86,9 +81,9 @@ def Complexity():
     while 1!=0:
         if i==0:
             i=1
-            g='Какая сложность 1-ая или 2-ая?'
+            g='Какая сложность 1-ая или 2-ая? Ответьте либо 1, либо 2: '
         else:
-            g='Данный ответ недопустим, ответьте либо 1, либо 2:'
+            g='Данный ответ недопустим, ответьте либо 1, либо 2: '
         complexity=input(g)
         if complexity=='1' or complexity=='2':
             break
@@ -129,16 +124,20 @@ def Multydeck_ship_autofill(numerical_number_of_ship_decks,u):
     direction=random.choice(correct_direction)
     if direction==0:
         x2,u=Direction_check(x1,-1,numerical_number_of_ship_decks,u)
+        y2=y1
     elif direction==1:
         y2,u=Direction_check(y1,1,numerical_number_of_ship_decks,u)
+        x2=x1
     elif direction==2:
         x2,u=Direction_check(x1,1,numerical_number_of_ship_decks,u)
+        y2=y1
     else:
         y2,u=Direction_check(y1,-1,numerical_number_of_ship_decks,u)
+        x2=x1
     return y1,y2,x1,x2,u
 def Input(game_board,player_or_robot,autofill,correct_direction):
     for players_digital_number in range(2):
-        letter_number_of_the_player=Letter_number_of_the_player(players_digital_number)[0].upper()+Letter_number_of_the_player()[1:]+'ый'
+        letter_number_of_the_player=Letter_number_of_the_player(players_digital_number)[0].upper()+Letter_number_of_the_player(players_digital_number)[1:]+'ый'
         print(letter_number_of_the_player+' игрок расставляет корабли.')
         for digital_number_of_the_ship in range(1,5):
             letter_number_of_the_ship=Ship_letter_number_calculator(digital_number_of_the_ship)
@@ -160,6 +159,7 @@ def Input(game_board,player_or_robot,autofill,correct_direction):
                     break
             Perimeter(y,3,x,3,players_digital_number)
             game_board[0][y][x]=1
+            os.system('CLS')
             Output(game_board,players_digital_number,3,3)
         for numerical_number_of_ship_decks in range(2,5):
             for digital_number_of_the_ship in range(1,5-numerical_number_of_ship_decks+1):
@@ -180,20 +180,10 @@ def Input(game_board,player_or_robot,autofill,correct_direction):
                     elif player_or_robot==1 and players_digital_number==1:
                         y1,y2,x1,x2,u=Multydeck_ship_autofill(numerical_number_of_ship_decks,u)
                     else:
-<<<<<<< HEAD
                         y1,y2,x1,x2,u=Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,p,u,game_board)
-=======
-                        if player_or_robot==1:
-                            y1,y2,x1,x2,u=Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,p,u,game_board)
-                        elif player_or_robot==0:
-                            if players_digital_number==1:
-                                y1,y2,x1,x2,u=Multydeck_ship_autofill(numerical_number_of_ship_decks,u)       
-                        else:
-                            y1,y2,x1,x2,u=Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,p,u,game_board)
->>>>>>> parent of efaef60 (Update main.py)
                     if u==numerical_number_of_ship_decks:
                         break
-                    y1,y2,x1,x2=min(y1,y2),max(y1,y2),min(x1,x2),max(x1,x2)
+                y1,y2,x1,x2=min(y1,y2),max(y1,y2),min(x1,x2),max(x1,x2)
                 if y1==y2:
                     Perimeter(y1,3,x1,numerical_number_of_ship_decks+2,players_digital_number)
                     for i in range(numerical_number_of_ship_decks):
@@ -202,6 +192,7 @@ def Input(game_board,player_or_robot,autofill,correct_direction):
                     Perimeter(y1,numerical_number_of_ship_decks+2,x1,3,players_digital_number)
                     for i in range(numerical_number_of_ship_decks):
                         game_board[players_digital_number][y1+i][x1]=1
+                os.system('CLS')
                 Output(game_board,players_digital_number,3,3)
     os.system('CLS')
     for i in range(2):
@@ -215,18 +206,14 @@ def Battle(game_board,player_or_robot,complexity):
             c=1
             while c==1:
                 c=0
-<<<<<<< HEAD
                 if player_or_robot==0:
                     print('Стреляет '+Letter_number_of_the_player(players_digital_number)+'ый игрок.')
                 elif players_digital_number==1:
                     print('Стреляет компьютер.')
-=======
-                if player_or_robot==1:
-                    print('Стреляет '+Letter_number_of_the_player()+'ый игрок.')
->>>>>>> parent of efaef60 (Update main.py)
                 else:
                     print('Стреляет игрок.')
                 i=0
+                p=0
                 while 1!=0:
                     if p==0:
                         p=1
@@ -280,11 +267,8 @@ def Victory(victory_counter,player_or_robot):
 correct_direction=[]
 game_board=[[[0 for i in range(10)] for x in range(10)] for p in range(2)]
 player_or_robot=Player_or_robot()
-if player_or_robot==0:
+complexity=0
+if player_or_robot=='с компьютером':
     complexity=Complexity()
 autofill=Autofill()
-a=0
-if player_or_robot=='С человеком':
-    Victory(Battle(Input(game_board,0,autofill,correct_direction),0,complexity),0)
-else:
-    Victory(Battle(Input(game_board,1,autofill,correct_direction),1,complexity),1)
+Victory(Battle(Input(game_board,int(player_or_robot!='с человеком'),autofill,correct_direction),int(player_or_robot!='с человеком'),complexity),int(player_or_robot!='с человеком'))
