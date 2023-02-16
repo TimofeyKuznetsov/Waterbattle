@@ -73,9 +73,9 @@ def Autofill():
         if autofill=='да' or autofill=='нет':
             break
     if autofill=='да':
-        return 0
-    else:
         return 1
+    else:
+        return 0
 def Complexity():
     i=0
     while 1!=0:
@@ -148,19 +148,13 @@ def Input(game_board,player_or_robot,autofill,correct_direction):
                     p=1
                 elif p==1:
                     g='Данная кординаты недопустимы. Введите к'
-                if players_digital_number==1:
-                    if player_or_robot==0:
-                        x,y=Randint(0,9)
-                    elif autofill==0:
-                        x,y=Randint(0,9)
+                if autofill==1 or (players_digital_number==1 and player_or_robot==1):
+                    x,y=Randint(0,9)
                 else:
-                    if autofill==0:
-                        x,y=Randint(0,9)
-                    else:
-                        array_with_variables=input(g + 'ординаты '+letter_number_of_the_ship+' однопалубного корабля через пробел: ').split()
-                        Y=Exception_e_brief(array_with_variables[0])#Исключение "Й" из таблицы ASCII из y
-                        y=ord(array_with_variables[0])-1040-Y#Вертикаль
-                        x=int(array_with_variables[1])-1#Горизонталь
+                    array_with_variables=input(g + 'ординаты '+letter_number_of_the_ship+' однопалубного корабля через пробел: ').split()
+                    Y=Exception_e_brief(array_with_variables[0])#Исключение "Й" из таблицы ASCII из y
+                    y=ord(array_with_variables[0])-1040-Y#Вертикаль
+                    x=int(array_with_variables[1])-1#Горизонталь
                 if game_board[players_digital_number][y][x]!=1 and game_board[players_digital_number][y][x]!=2:
                     break
             Perimeter(y,3,x,3,players_digital_number)
@@ -179,16 +173,14 @@ def Input(game_board,player_or_robot,autofill,correct_direction):
                 p=0
                 while 1!=0:
                     u=0
-                    if autofill==0:
+                    if autofill==1:
+                        y1,y2,x1,x2,u=Multydeck_ship_autofill(numerical_number_of_ship_decks,u)
+                    elif player_or_robot==0:
+                        y1,y2,x1,x2,u=Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,p,u,game_board)
+                    elif player_or_robot==1 and players_digital_number==1:
                         y1,y2,x1,x2,u=Multydeck_ship_autofill(numerical_number_of_ship_decks,u)
                     else:
-                        if player_or_robot==1:
-                            y1,y2,x1,x2,u=Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,p,u,game_board)
-                        elif player_or_robot==0:
-                            if players_digital_number==1:
-                                y1,y2,x1,x2,u=Multydeck_ship_autofill(numerical_number_of_ship_decks,u)
-                        else:
-                            y1,y2,x1,x2,u=Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,p,u,game_board)
+                        y1,y2,x1,x2,u=Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,p,u,game_board)
                     if u==numerical_number_of_ship_decks:
                         break
                 y1,y2,x1,x2=min(y1,y2),max(y1,y2),min(x1,x2),max(x1,x2)
@@ -203,6 +195,8 @@ def Input(game_board,player_or_robot,autofill,correct_direction):
                 os.system('CLS')
                 Output(game_board,players_digital_number,3,3)
     os.system('CLS')
+    for i in range(2):
+        Output(game_board,players_digital_number,3,3)
     p=0
     return game_board
 def Battle(game_board,player_or_robot,complexity):
@@ -212,41 +206,44 @@ def Battle(game_board,player_or_robot,complexity):
             c=1
             while c==1:
                 c=0
-                if player_or_robot==1:
+                if player_or_robot==0:
                     print('Стреляет '+Letter_number_of_the_player(players_digital_number)+'ый игрок.')
+                elif players_digital_number==1:
+                    print('Стреляет компьютер.')
                 else:
-                    if players_digital_number==1:
-                        print('Стреляет компьютер.')
-                    else:
-                        print('Стреляет игрок.')
+                    print('Стреляет игрок.')
                 i=0
                 p=0
                 while 1!=0:
                     if p==0:
                         p=1
                         g='К'
-                    else:
+                    elif p==1:
                         g='Вы уже стреляли в эту точку. Введите к'
-                    if player_or_robot==1:
-                        array_with_variables=input(g + 'ординаты выстрела через пробел:').split()
+                    else:
+                        g='Нет смысла туда стрелять. Введите к'
+                        p=1
+                    if player_or_robot==0 or players_digital_number==1:
+                        array_with_variables=input(g + 'ординаты выстрела через пробел: ').split()
                         Y=Exception_e_brief(array_with_variables[0])
                         y=ord(array_with_variables[0])-1040-Y
                         x=array_with_variables[0]-1
+                    elif complexity==2:
+                        Tactics(i//50)
                     else:
-                        if complexity==2:
-                            Tactics(i//50)
+                        x,y=Randint(0,9)
+                    if game_board[1-players_digital_number][y][x]!=3 and game_board[1-players_digital_number][y][x]!='*':
+                        if game_board[1-players_digital_number][y][x]!=2:
+                            break
                         else:
-                            x,y=Randint(0,9)
-                    if game_board[1-players_digital_number][y][x]!=3:
-                        break
-                        if complexity==2:
-                            i+=1
+                            p=2
+                        i+=complexity==2
                 if game_board[1-players_digital_number][y][x]==1:
                     victory_counter[players_digital_number]-=1
                     c=1
-                    game_board[1-players_digital_number][y][x]='*'
-                else:
                     game_board[1-players_digital_number][y][x]=3
+                else:
+                    game_board[1-players_digital_number][y][x]='*'
                 os.system('CLS')
                 Output(game_board,players_digital_number,1,2)
                 if victory_counter[0]==0 or victory_counter[1]==0:
@@ -258,11 +255,12 @@ def Battle(game_board,player_or_robot,complexity):
 def Victory(victory_counter,player_or_robot):
     if victory_counter==0:
         print('Первый игрок победил!')
-    if victory_counter==1:
-        if player_or_robot==0:
-            print('Второй игрок победил!')
-        else:
-            print('Компьютер победил!')
+    elif victory_counter==0 and player_or_robot==1:
+        print('Игрок победил!')
+    elif player_or_robot==0:
+        print('Второй игрок победил!')
+    else:
+        print('Компьютер победил!')
     for players_digital_number in range(2):
         print('Поле'+Letter_number_of_the_player()+'ого игрока:')
         Output(game_board,players_digital_number,10,10)
