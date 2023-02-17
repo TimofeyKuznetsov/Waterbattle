@@ -1,6 +1,6 @@
 import os
 import random
-def Input_cordinate(g):
+def Input_cordinate_shoot(g):
     array_with_variables=input(g + 'ординаты выстрела через пробел: ').split()
     Y=Exception_e_brief(array_with_variables[0])
     y=ord(array_with_variables[0])-1040-Y
@@ -16,13 +16,13 @@ def Lines():
     for i in range(10):
         print(chr(1040+i+i//9),end=' ')
     print()
-def Output(game_board,players_digital_number,a,b):
+def Output(game_board,players_digital_number,a):
     Lines()
     for x in range(10):
         print(x+1,end=(' '*(2-x//9)))
         for y in range(10):
-            if game_board[players_digital_number][x][y]==a or game_board[players_digital_number][x][y]==b:
-                print(0,end=' ')
+            if game_board[players_digital_number][x][y]==1 or game_board[players_digital_number][x][y]==2 or game_board[players_digital_number][x][y]==3 or game_board[players_digital_number][x][y]==4 or game_board[players_digital_number][x][y]==5:
+                print(a,end=' ')
             else:
                 print(game_board[players_digital_number][x][y],end=' ')
         print()
@@ -40,11 +40,12 @@ def Ship_letter_number_calculator(a):
         return 'третьего'
     else:
         return 'четвертого'
-def Perimeter(a,b,c,d,players_digital_number):
+def Perimeter(a,b,c,d,players_digital_number,game_board):
     for i in range(b):
         for x in range(d):
             if a-1+i>=0 and c-1+x>=0 and a-1+i<=9 and c-1+x<=9:
-                game_board[players_digital_number][a-1+i][c-1+x]=2
+                game_board[players_digital_number][a-1+i][c-1+x]=5
+    return game_board
 def Exception_e_brief(a):
     if ord(a)==1050:
         return 1
@@ -165,10 +166,10 @@ def Input(game_board,player_or_robot,autofill,correct_direction):
                     x=int(array_with_variables[1])-1#Горизонталь
                 if game_board[players_digital_number][y][x]!=1 and game_board[players_digital_number][y][x]!=2:
                     break
-            Perimeter(y,3,x,3,players_digital_number)
+            game_board=Perimeter(y,3,x,3,players_digital_number,game_board)
             game_board[0][y][x]=1
             os.system('CLS')
-            Output(game_board,players_digital_number,3,3)
+            Output(game_board,players_digital_number,1)
         for numerical_number_of_ship_decks in range(2,5):
             for digital_number_of_the_ship in range(1,5-numerical_number_of_ship_decks+1):
                 letter_number_of_the_ship=Ship_letter_number_calculator(digital_number_of_the_ship)
@@ -193,15 +194,15 @@ def Input(game_board,player_or_robot,autofill,correct_direction):
                         break
                 y1,y2,x1,x2=min(y1,y2),max(y1,y2),min(x1,x2),max(x1,x2)
                 if y1==y2:
-                    Perimeter(y1,3,x1,numerical_number_of_ship_decks+2,players_digital_number)
+                    game_board=Perimeter(y1,3,x1,numerical_number_of_ship_decks,game_board+2,players_digital_number)
                     for i in range(numerical_number_of_ship_decks):
                         game_board[players_digital_number][y1][x1+i]=1
                 elif x1==x2:
-                    Perimeter(y1,numerical_number_of_ship_decks+2,x1,3,players_digital_number)
+                    game_board=Perimeter(y1,numerical_number_of_ship_decks,game_board+2,x1,3,players_digital_number)
                     for i in range(numerical_number_of_ship_decks):
-                        game_board[players_digital_number][y1+i][x1]=1
+                        game_board[players_digital_number][y1+i][x1]=numerical_number_of_ship_decks
                 os.system('CLS')
-                Output(game_board,players_digital_number,3,3)
+                Output(game_board,players_digital_number,1)
     os.system('CLS')
     p=0
     return game_board
@@ -231,24 +232,27 @@ def Battle(game_board,player_or_robot,complexity):
                         g='Нет смысла туда стрелять. Введите к'
                         p=1
                     if player_or_robot==0:
-                        Y,y,x=Input_cordinate(g)
+                        Y,y,x=Input_cordinate_shoot(g)
                     elif players_digital_number==0:
-                        Y,y,x=Input_cordinate(g)
+                        Y,y,x=Input_cordinate_shoot(g)
                     elif complexity==2:
                         Tactics(i//50)
                     else:
                         x,y=Randint(0,9)
-                    if game_board[1-players_digital_number][y][x]!=3 and game_board[1-players_digital_number][y][x]!='*':
-                        break
+                    if game_board[1-players_digital_number][y][x]!=6 and game_board[1-players_digital_number][y][x]!='*':
                         i+=complexity==2
+                        break
                 if game_board[1-players_digital_number][y][x]==1:
                     victory_counter[players_digital_number]-=1
                     c=1
-                    game_board[1-players_digital_number][y][x]=3
+                    if game_board[1-players_digital_number][y][x]!=1 and player_or_robot==0:
+                        
+                    else:
+                        game_board[1-players_digital_number][y][x]=6
                 else:
                     game_board[1-players_digital_number][y][x]='*'
                 os.system('CLS')
-                Output(game_board,players_digital_number,1,2)
+                Output(game_board,players_digital_number,0)
                 if victory_counter[0]==0 or victory_counter[1]==0:
                     break
             if victory_counter[0]==0:
@@ -266,7 +270,7 @@ def Victory(victory_counter,player_or_robot):
         print('Компьютер победил!')
     for players_digital_number in range(2):
         print('Поле'+Letter_number_of_the_player()+'ого игрока:')
-        Output(game_board,players_digital_number,10,10)
+        Output(game_board,players_digital_number,1)
 correct_direction=[]
 game_board=[[[0 for i in range(10)] for x in range(10)] for p in range(2)]
 player_or_robot=Player_or_robot()
