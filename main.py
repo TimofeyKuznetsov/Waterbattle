@@ -1,5 +1,11 @@
 import os
 import random
+def Input_cordinate(g):
+    array_with_variables=input(g + 'ординаты выстрела через пробел: ').split()
+    Y=Exception_e_brief(array_with_variables[0])
+    y=ord(array_with_variables[0])-1040-Y
+    x=int(array_with_variables[1])-1
+    return Y,y,x
 def Direction_check(a,b,numerical_number_of_ship_decks,u):
     for i in range(numerical_number_of_ship_decks):
         if a+i*b!=1 and a+i*b!=2:
@@ -194,8 +200,14 @@ def Input(game_board,player_or_robot,autofill,correct_direction):
                         game_board[players_digital_number][y1+i][x1]=1
                 os.system('CLS')
                 Output(game_board,players_digital_number,3,3)
-#    os.system('CLS')
-    print(game_board)
+    os.system('CLS')
+    for player_digital_number in range(2):
+        Output(game_board,players_digital_number,3,3)
+        print(player_digital_number)
+    for i in range(2):
+        for j in range(10):
+            print(game_board[i][j])
+        print()
     p=0
     return game_board
 def Battle(game_board,player_or_robot,complexity):
@@ -223,20 +235,16 @@ def Battle(game_board,player_or_robot,complexity):
                     else:
                         g='Нет смысла туда стрелять. Введите к'
                         p=1
-                    if player_or_robot==0 or players_digital_number==1:
-                        array_with_variables=input(g + 'ординаты выстрела через пробел: ').split()
-                        Y=Exception_e_brief(array_with_variables[0])
-                        y=ord(array_with_variables[0])-1040-Y
-                        x=array_with_variables[0]-1
+                    if player_or_robot==0:
+                        Y,y,x=Input_cordinate(g)
+                    elif players_digital_number==0:
+                        Y,y,x=Input_cordinate(g)
                     elif complexity==2:
                         Tactics(i//50)
                     else:
                         x,y=Randint(0,9)
                     if game_board[1-players_digital_number][y][x]!=3 and game_board[1-players_digital_number][y][x]!='*':
-                        if game_board[1-players_digital_number][y][x]!=2:
-                            break
-                        else:
-                            p=2
+                        break
                         i+=complexity==2
                 if game_board[1-players_digital_number][y][x]==1:
                     victory_counter[players_digital_number]-=1
@@ -244,7 +252,7 @@ def Battle(game_board,player_or_robot,complexity):
                     game_board[1-players_digital_number][y][x]=3
                 else:
                     game_board[1-players_digital_number][y][x]='*'
-#                os.system('CLS')
+                os.system('CLS')
                 Output(game_board,players_digital_number,1,2)
                 if victory_counter[0]==0 or victory_counter[1]==0:
                     break
