@@ -11,11 +11,13 @@ def Direction_check(a,b,numerical_number_of_ship_decks,u):
         if a+i*b!=1 and a+i*b!=2:
             u+=1
     return a-(numerical_number_of_ship_decks-1),u
-def Output(game_board,players_digital_number,a,b):
+def Lines():
     print(' ',end='  ')
     for i in range(10):
         print(chr(1040+i+i//9),end=' ')
     print()
+def Output(game_board,players_digital_number,a,b):
+    Lines()
     for x in range(10):
         print(x+1,end=(' '*(2-x//9)))
         for y in range(10):
@@ -201,13 +203,6 @@ def Input(game_board,player_or_robot,autofill,correct_direction):
                 os.system('CLS')
                 Output(game_board,players_digital_number,3,3)
     os.system('CLS')
-    for player_digital_number in range(2):
-        Output(game_board,players_digital_number,3,3)
-        print(player_digital_number)
-    for i in range(2):
-        for j in range(10):
-            print(game_board[i][j])
-        print()
     p=0
     return game_board
 def Battle(game_board,player_or_robot,complexity):
