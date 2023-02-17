@@ -21,8 +21,8 @@ def Output(game_board,players_digital_number,a):
     for x in range(10):
         print(x+1,end=(' '*(2-x//9)))
         for y in range(10):
-            if game_board[players_digital_number][x][y]==1 or game_board[players_digital_number][x][y]==2 or game_board[players_digital_number][x][y]==3 or game_board[players_digital_number][x][y]==4 or game_board[players_digital_number][x][y]==5:
-                print(a,end=' ')
+            if game_board[players_digital_number][x][y]==1 or game_board[players_digital_number][x][y]==2 or game_board[players_digital_number][x][y]==3 or game_board[players_digital_number][x][y]==4:
+                print(a*(game_board[players_digital_number][x][y]==5+1),end=' ')
             else:
                 print(game_board[players_digital_number][x][y],end=' ')
         print()
@@ -205,6 +205,11 @@ def Input(game_board,player_or_robot,autofill,correct_direction):
                 Output(game_board,players_digital_number,1)
     os.system('CLS')
     p=0
+    for players_digital_number in range(2):
+        for x in range(10):
+            for y in range(10):
+                if game_board[players_digital_number][y][x]==5:
+                    game_board[players_digital_number][y][x]=0
     return game_board
 def Battle(game_board,player_or_robot,complexity):
     victory_counter=[20 for i in range (2)]
@@ -246,8 +251,33 @@ def Battle(game_board,player_or_robot,complexity):
                     victory_counter[players_digital_number]-=1
                     c=1
                     if game_board[1-players_digital_number][y][x]!=1 and player_or_robot==0:
-                        
-                    else:
+#                        if ship_len==0:
+#                            ship_len=game_board[1-players_digital_number][y][x]-1
+#                            x1,y1=Randint(0,9)
+#                            if y1!=0:
+#                                correct_direction.append(3)
+#                            if y1!=9:
+#                                correct_direction.append(1)
+#                            if x1!=0:
+#                                correct_direction.append(0)
+#                            if x1!=9:
+#                                correct_direction.append(4)
+#                            direction=random.choice(correct_direction)
+#                            if direction==0:
+#                                x2,u=Direction_check(x1,-1,numerical_number_of_ship_decks,u)
+#                                y2=y1
+#                            elif direction==1:
+#                                y2,u=Direction_check(y1,1,numerical_number_of_ship_decks,u)
+#                                x2=x1
+#                            elif direction==2:
+#                                x2,u=Direction_check(x1,1,numerical_number_of_ship_decks,u)
+#                                y2=y1
+#                            else:
+#                                y2,u=Direction_check(y1,-1,numerical_number_of_ship_decks,u)
+#                                x2=x1
+#                        elif ship_len>1:
+#                            ship_len-=1
+#                    else:
                         game_board[1-players_digital_number][y][x]=6
                 else:
                     game_board[1-players_digital_number][y][x]='*'
