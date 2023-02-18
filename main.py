@@ -41,10 +41,10 @@ def Ship_letter_number_calculator(a):
     else:
         return 'четвертого'
 def Perimeter(a,b,c,d,players_digital_number,game_board):
-    for i in range(b):
+    for y in range(b):
         for x in range(d):
-            if a-1+i>=0 and c-1+x>=0 and a-1+i<=9 and c-1+x<=9:
-                game_board[players_digital_number][a-1+i][c-1+x]=5
+            if a-1+y>=0 and c-1+x>=0 and a-1+y<=9 and c-1+x<=9:
+                game_board[players_digital_number][a-1+y][c-1+x]=5
     return game_board
 def Exception_e_brief(a):
     if ord(a)==1050:
@@ -120,16 +120,21 @@ def Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_shi
             if abs(y2-y1)+1==numerical_number_of_ship_decks and game_board[players_digital_number][y1+x][x1]!=2 and game_board[players_digital_number][y1+x][x1]!=1:
                 u+=1
     return y1,y2,x1,x2,u
+def Direction(a,b):
+    correct_direction=[]
+    if b!=0:
+        correct_direction.append(0)
+    if a!=9:
+        correct_direction.append(1)
+    if b!=9:
+        correct_direction.append(2)
+    if a!=0:
+        correct_direction.append(3)
+    return correct_direction
 def Multydeck_ship_autofill(numerical_number_of_ship_decks,u):
     x1,y1=Randint(0,9)
-    if y1!=0:
-        correct_direction.append(3)
-    if y1!=9:
-        correct_direction.append(1)
-    if x1!=0:
-        correct_direction.append(0)
-    if x1!=9:
-        correct_direction.append(4)
+    correct_direction=[]
+    correct_direction=Direction(y1,x1)
     direction=random.choice(correct_direction)
     if direction==0:
         x2,u=Direction_check(x1,-1,numerical_number_of_ship_decks,u)
@@ -212,6 +217,7 @@ def Input(game_board,player_or_robot,autofill,correct_direction):
                     game_board[players_digital_number][y][x]=0
     return game_board
 def Battle(game_board,player_or_robot,complexity):
+    k=False
     victory_counter=[20 for i in range (2)]
     while victory_counter[0]!=0 or victory_counter[1]!=0:
         for players_digital_number in range(2):
@@ -241,43 +247,33 @@ def Battle(game_board,player_or_robot,complexity):
                     elif players_digital_number==0:
                         Y,y,x=Input_cordinate_shoot(g)
                     elif complexity==2:
+#                        if k:
+#                            direction=random.random(correct_direction)
+#                        else:
                         Tactics(i//50)
                     else:
-                        x,y=Randint(0,9)
+#                        if k:
+#
+#                        else:
+                        x,y=Randint(9)
                     if game_board[1-players_digital_number][y][x]!=6 and game_board[1-players_digital_number][y][x]!='*':
                         i+=complexity==2
                         break
                 if game_board[1-players_digital_number][y][x]==1:
                     victory_counter[players_digital_number]-=1
                     c=1
-                    if game_board[1-players_digital_number][y][x]!=1 and player_or_robot==0:
-#                        if ship_len==0:
-#                            ship_len=game_board[1-players_digital_number][y][x]-1
-#                            x1,y1=Randint(0,9)
-#                            if y1!=0:
-#                                correct_direction.append(3)
-#                            if y1!=9:
-#                                correct_direction.append(1)
-#                            if x1!=0:
-#                                correct_direction.append(0)
-#                            if x1!=9:
-#                                correct_direction.append(4)
-#                            direction=random.choice(correct_direction)
-#                            if direction==0:
-#                                x2,u=Direction_check(x1,-1,numerical_number_of_ship_decks,u)
-#                                y2=y1
-#                            elif direction==1:
-#                                y2,u=Direction_check(y1,1,numerical_number_of_ship_decks,u)
-#                                x2=x1
-#                            elif direction==2:
-#                                x2,u=Direction_check(x1,1,numerical_number_of_ship_decks,u)
-#                                y2=y1
-#                            else:
-#                                y2,u=Direction_check(y1,-1,numerical_number_of_ship_decks,u)
-#                                x2=x1
-#                        elif ship_len>1:
-#                            ship_len-=1
-#                    else:
+                    if game_board[1-players_digital_number][y][x]==1 and player_or_robot==1:
+#                        ship_len,minus_ship_len=game_board[1-players_digital_number][y][x]
+#                        if minus_ship_len==0:
+#                            minus_ship_len=game_board[1-players_digital_number][y][x]-1
+#                            correct_direction=[]
+#                            correct_direction=Direction(y,x)
+#                            k=True
+#                        elif minus_ship_len>1:
+#                            minus_ship_len-=1
+#                        else:
+#                            minus_ship_len=0
+#                            if correct_direction
                         game_board[1-players_digital_number][y][x]=6
                 else:
                     game_board[1-players_digital_number][y][x]='*'
