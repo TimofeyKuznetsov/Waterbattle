@@ -172,8 +172,8 @@ def Input(game_board,player_or_robot,autofill,correct_direction):
                 else:
                     array_with_variables=input(g + 'ординаты '+letter_number_of_the_ship+' однопалубного корабля через пробел: ').split()
                     Y=Exception_e_brief(array_with_variables[0])#Исключение "Й" из таблицы ASCII из y
-                    y=1#ord(array_with_variables[0])-1040-Y#Вертикаль
-                    x=1#int(array_with_variables[1])-1#Горизонталь
+                    y=ord(array_with_variables[0])-1040-Y#Вертикаль
+                    x=int(array_with_variables[1])-1#Горизонталь
                 if game_board[players_digital_number][y][x]!=1 and game_board[players_digital_number][y][x]!=5:
                     break
             game_board=Perimeter(y,3,x,3,players_digital_number,game_board)
