@@ -102,7 +102,7 @@ def Complexity():
         if complexity=='1' or complexity=='2':
             break
     return int(complexity)
-def Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,p,u,game_board):
+def Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,p,game_board):
     if p==0:
         g='К'
         p=1
@@ -194,11 +194,11 @@ def Input(game_board,player_or_robot,autofill,correct_direction):
                     if autofill==1:
                         y1,y2,x1,x2,u=Multydeck_ship_autofill(numerical_number_of_ship_decks,game_board,players_digital_number)
                     elif player_or_robot==0:
-                        y1,y2,x1,x2,u=Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,p,u,game_board)
+                        y1,y2,x1,x2,u=Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,p,game_board)
                     elif player_or_robot==1 and players_digital_number==1:
                         y1,y2,x1,x2,u=Multydeck_ship_autofill(numerical_number_of_ship_decks,game_board,players_digital_number)
                     else:
-                        y1,y2,x1,x2,u=Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,p,u,game_board)
+                        y1,y2,x1,x2,u=Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,p,game_board)
                     if u==numerical_number_of_ship_decks:
                         print(u,numerical_number_of_ship_decks,'Это нужно')
                         break
