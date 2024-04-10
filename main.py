@@ -1,13 +1,8 @@
 import os
 import random
-def Exception_e_brief(a):
-    if ord(a)==1050:
-        return 1
-    else:
-        return 0
 def Input_cordinate_shoot(g):
     array_with_variables=input(g + 'ординаты выстрела через пробел: ').split()
-    Y=Exception_e_brief(array_with_variables[0])
+    Y=int(ord(array_with_variables[0])==1050)
     y=ord(array_with_variables[0])-1040-Y
     x=int(array_with_variables[1])-1
     return Y,y,x
@@ -110,8 +105,8 @@ def Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_shi
         g='Данные кординаты недопустимы. Введите к'
     array_with_variables=input(g+'ординаты '+letter_number_of_the_ship+ur+'палубного корабля через пробел: ').split()
     os.system('CLS')
-    Y0=Exception_e_brief(array_with_variables[0])#Исключение "Й" из таблицы ASCII из y1
-    Y1=Exception_e_brief(array_with_variables[2])#Исключение "Й" из таблицы ASCII из y2
+    Y0=int(ord(array_with_variables[0]==1050))#Исключение "Й" из таблицы ASCII из y1
+    Y1=int(ord(array_with_variables[2]==1050))#Исключение "Й" из таблицы ASCII из y2
     y1=ord(array_with_variables[0])-1040-Y0#Начальная вертикаль
     x1=int(array_with_variables[1])-1#Начальная горизонталь
     y2=ord(array_with_variables[2])-1040-Y1#Конечная вертикаль
@@ -171,7 +166,7 @@ def Input(game_board,player_or_robot,autofill,correct_direction):
                     x,y=Randint(0,9)
                 else:
                     array_with_variables=input(g + 'ординаты '+letter_number_of_the_ship+' однопалубного корабля через пробел: ').split()
-                    Y=Exception_e_brief(array_with_variables[0])#Исключение "Й" из таблицы ASCII из y
+                    Y=int(ord(array_with_variables[0]==1050))#Исключение "Й" из таблицы ASCII из y
                     y=ord(array_with_variables[0])-1040-Y#Вертикаль
                     x=int(array_with_variables[1])-1#Горизонталь
                 if game_board[players_digital_number][y][x]!=1 and game_board[players_digital_number][y][x]!=5:
