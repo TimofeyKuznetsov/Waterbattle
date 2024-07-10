@@ -46,30 +46,6 @@ def Perimeter(a,b,c,d,players_digital_number,game_board):
     return game_board
 def Randint(a,b):
     return random.randint(a,b),random.randint(a,b)
-def Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,repetition_counter,game_board):
-    place_check=0
-    if repetition_counter==0:
-        question_text='К'
-        repetition_counter=1
-    else:
-        question_text='Данные кординаты недопустимы. Введите к'
-    array_with_variables=input(question_text+'ординаты '+letter_number_of_the_ship+ur+'палубного корабля через пробел: ').split()
-    os.system('CLS')
-    Y0=int(ord(array_with_variables[0])==1050)#Исключение "Й" из таблицы ASCII из y1
-    Y1=int(ord(array_with_variables[2])==1050)#Исключение "Й" из таблицы ASCII из y2
-    x1=ord(array_with_variables[0])-1040-Y0#Начальная вертикаль
-    y1=int(array_with_variables[1])-1#Начальная горизонталь
-    x2=ord(array_with_variables[2])-1040-Y1#Конечная вертикаль
-    y2=int(array_with_variables[3])-1#Конечная горизонталь
-    if y1==y2:
-        for x in range(numerical_number_of_ship_decks):
-            if abs(x2-x1)+1==numerical_number_of_ship_decks and game_board[players_digital_number][y1][x1+x]!=2 and game_board[players_digital_number][y1][x1+x]!=3 and game_board[players_digital_number][y1][x1+x]!=4 and game_board[players_digital_number][y1][x1+x]!=1 and game_board[players_digital_number][y1][x1+x]!=5:
-                place_check+=1
-    elif x1==x2:
-        for x in range(numerical_number_of_ship_decks):
-            if abs(y2-y1)+1==numerical_number_of_ship_decks and game_board[players_digital_number][y1+x][x1]!=2 and game_board[players_digital_number][y1+x][x1]!=3 and game_board[players_digital_number][y1+x][x1]!=4 and game_board[players_digital_number][y1+x][x1]!=1 and game_board[players_digital_number][y1+x][x1]!=5:
-                place_check+=1
-    return y1,y2,x1,x2,place_check
 def Direction(a,b):
     correct_direction=[]
     if b!=0:
@@ -99,6 +75,31 @@ def Multydeck_ship_autofill(numerical_number_of_ship_decks,game_board,players_di
         y2,u=Direction_check(y1,-1,numerical_number_of_ship_decks,1,players_digital_number,x1,game_board)
         x2=x1
     return y1,y2,x1,x2,u
+#
+def Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,players_digital_number,repetition_counter,game_board):
+    place_check=0
+    if repetition_counter==0:
+        question_text='К'
+        repetition_counter=1
+    else:
+        question_text='Данные кординаты недопустимы. Введите к'
+    array_with_variables=input(question_text+'ординаты '+letter_number_of_the_ship+ur+'палубного корабля через пробел: ').split()
+    os.system(clean)
+    Y0=int(ord(array_with_variables[0])==1050)#Исключение "Й" из таблицы ASCII из y1
+    Y1=int(ord(array_with_variables[2])==1050)#Исключение "Й" из таблицы ASCII из y2
+    x1=ord(array_with_variables[0])-1040-Y0#Начальная вертикаль
+    y1=int(array_with_variables[1])-1#Начальная горизонталь
+    x2=ord(array_with_variables[2])-1040-Y1#Конечная вертикаль
+    y2=int(array_with_variables[3])-1#Конечная горизонталь
+    if y1==y2:
+        for x in range(numerical_number_of_ship_decks):
+            if abs(x2-x1)+1==numerical_number_of_ship_decks and game_board[players_digital_number][y1][x1+x]!=2 and game_board[players_digital_number][y1][x1+x]!=3 and game_board[players_digital_number][y1][x1+x]!=4 and game_board[players_digital_number][y1][x1+x]!=1 and game_board[players_digital_number][y1][x1+x]!=5:
+                place_check+=1
+    elif x1==x2:
+        for x in range(numerical_number_of_ship_decks):
+            if abs(y2-y1)+1==numerical_number_of_ship_decks and game_board[players_digital_number][y1+x][x1]!=2 and game_board[players_digital_number][y1+x][x1]!=3 and game_board[players_digital_number][y1+x][x1]!=4 and game_board[players_digital_number][y1+x][x1]!=1 and game_board[players_digital_number][y1+x][x1]!=5:
+                place_check+=1
+    return y1,y2,x1,x2,place_check
 Letter_number_of_the_player={0:'перв',1:'второ'}
 Ship_letter_numbers={1:'первого',2:'второго',3:'третьего',4:'четвертого'}
 correct_direction=[]
@@ -162,7 +163,7 @@ for player_digital_number in range(2):
                 break
         game_board=Perimeter(y,3,x,3,player_digital_number,game_board)
         game_board[player_digital_number][y][x]=1
-        os.system('CLS')
+        os.system(clean)
         Output(game_board,player_digital_number,1)
     for numerical_number_of_ship_decks in range(2,5):
         for digital_number_of_the_ship in range(1,6-numerical_number_of_ship_decks):
@@ -174,18 +175,16 @@ for player_digital_number in range(2):
             else:
                 ur=' четырех'
             repetition_counter=0
-            while True:
+            place_check=0
+            while place_check!=numerical_number_of_ship_decks:
                 if autofill==1:
-                    y1,y2,x1,x2,u=Multydeck_ship_autofill(numerical_number_of_ship_decks,game_board,player_digital_number)
+                    y1,y2,x1,x2,place_check=Multydeck_ship_autofill(numerical_number_of_ship_decks,game_board,player_digital_number)
                 elif player_or_robot==0:
-                    y1,y2,x1,x2,u=Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,player_digital_number,repetition_counter,game_board)
+                    y1,y2,x1,x2,place_check=Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,player_digital_number,repetition_counter,game_board)
                 elif player_or_robot==1 and player_digital_number==1:
-                    y1,y2,x1,x2,u=Multydeck_ship_autofill(numerical_number_of_ship_decks,game_board,player_digital_number)
+                    y1,y2,x1,x2,place_check=Multydeck_ship_autofill(numerical_number_of_ship_decks,game_board,player_digital_number)
                 else:
-                    y1,y2,x1,x2,u=Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,player_digital_number,repetition_counter,game_board)
-                if u==numerical_number_of_ship_decks:
-                    print(u,numerical_number_of_ship_decks,'Это нужно')
-                    break
+                    y1,y2,x1,x2,place_check=Multydeck_ship_input(numerical_number_of_ship_decks,letter_number_of_the_ship,ur,player_digital_number,repetition_counter,game_board)
             y1,y2,x1,x2=min(y1,y2),max(y1,y2),min(x1,x2),max(x1,x2)
             if y1==y2:
                 game_board=Perimeter(y1,3,x1,numerical_number_of_ship_decks+2,player_digital_number,game_board)
@@ -195,10 +194,10 @@ for player_digital_number in range(2):
                 game_board=Perimeter(y1,numerical_number_of_ship_decks+2,x1,3,player_digital_number,game_board)
                 for repetition_counter in range(numerical_number_of_ship_decks):
                     game_board[player_digital_number][y1+repetition_counter][x1]=numerical_number_of_ship_decks
-#            os.system('CLS')
+#            os.system(clean)
             Output(game_board,player_digital_number,1)
             print(digital_number_of_the_ship)
-#os.system('CLS')
+#os.system(clean)
 repetition_counter=0
 for player_digital_number in range(2):
     for x in range(10):
@@ -209,9 +208,7 @@ k=False
 victory_counter=[20 for i in range (2)]
 while victory_counter[0]!=0 or victory_counter[1]!=0:
     for player_digital_number in range(2):
-        c=1
-        while c==1:
-            c=0
+        while True:
             if player_or_robot==0:
                 print('Стреляет '+Letter_number_of_the_player[player_digital_number]+'ый игрок.')
             elif player_digital_number==1:
@@ -247,7 +244,6 @@ while victory_counter[0]!=0 or victory_counter[1]!=0:
                     break
             if game_board[1-player_digital_number][y][x]==1:
                 victory_counter[player_digital_number]-=1
-                c=1
                 if game_board[1-player_digital_number][y][x]==1 and player_or_robot==1:
 #                    ship_len,minus_ship_len=game_board[1-players_digital_number][y][x]
 #                    if minus_ship_len==0:
@@ -263,7 +259,8 @@ while victory_counter[0]!=0 or victory_counter[1]!=0:
                     game_board[1-player_digital_number][y][x]=6
             else:
                 game_board[1-player_digital_number][y][x]='*'
-            os.system('CLS')
+                break
+            os.system(clean)
             Output(game_board,player_digital_number,0)
             if victory_counter[0]==0 or victory_counter[1]==0:
                 break
